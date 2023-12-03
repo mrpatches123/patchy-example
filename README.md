@@ -1,4 +1,10 @@
-# patchy-example
+## patchy-example
+
+#Main Repo
+
+https://github.com/mrpatches123/patchy-api/tree/main
+
+#Npm Custom Commands for tools Docs
 
 apon cloning this repo you might need to manually run the games type definitions for listed in the package.json for server and server-ui for errors to disappear.
 
