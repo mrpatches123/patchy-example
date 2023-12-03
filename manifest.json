@@ -1,0 +1,57 @@
+{
+	"format_version": 2,
+	"header": {
+		"description": "By: BootheBoys#0057 - 1.0.68",
+		"name": "SBBP",
+		"uuid": "586b4086-2d0d-402b-8a10-5c575ad23146",
+		"version": [
+			1,
+			0,
+			68
+		],
+		"min_engine_version": [
+			1,
+			20,
+			10
+		]
+	},
+	"modules": [
+		{
+			"description": "By: BootheBoys#0057",
+			"type": "data",
+			"uuid": "d92b67fe-3ab1-42f1-85d8-55834658fbe4",
+			"version": [
+				0,
+				1,
+				0
+			]
+		},
+		{
+			"type": "script",
+			"language": "javascript",
+			"uuid": "32395c59-c04e-4e2e-800d-4c9d3037b292",
+			"entry": "scripts/package_import.js",
+			"version": "1.0.0-beta"
+		}
+	],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server-ui",
+			"version": "1.2.0-beta"
+		},
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.7.0-beta"
+		}
+	],
+	"capabilities": [
+		"script_eval"
+	],
+	"metadata": {
+		"generated_with": {
+			"bridge": [
+				"1.8.4"
+			]
+		}
+	}
+}

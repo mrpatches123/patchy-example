@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "updateapi": "node src/node/update.js",
+    "updatesrc": "node src/node/update_ts.js",
+    "updatesrctsc": "node src/node/update_ts.js && tsc",
+    "updaterealm": "node src/node/export_realm.mjs",
+    "gentomes": "node src/tomes/gen.js"
+  },
+  "dependencies": {
+    "@minecraft/server": "^1.8.0-beta.1.20.50-preview.20",
+    "@minecraft/server-ui": "^1.2.0-beta.1.20.50-preview.20",
+    "@minecraft/vanilla-data": "^1.20.0",
+    "caller-callsite": "^5.0.0",
+    "cheerio": "^1.0.0-rc.12",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^10.1.0",
+    "path": "^0.12.7",
+    "puppeteer": "^21.5.2"
+  },
+  "type": "module"
+}
