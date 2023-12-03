@@ -1,12 +1,14 @@
-## patchy-example
+# patchy-example
 
-#Main Repo
+### Notes
+
+apon cloning this repo you might need to manually run the games type definitions for listed in the package.json for server and server-ui for errors to disappear.
+
+### Main Repo
 
 https://github.com/mrpatches123/patchy-api/tree/main
 
-#Npm Custom Commands for tools Docs
-
-apon cloning this repo you might need to manually run the games type definitions for listed in the package.json for server and server-ui for errors to disappear.
+### Npm Custom Commands for tools Docs
 
 ```npm run updatesrc```
 takes from the cloned patchy-api and replaces its folder with the updated folder (basicly updates ./src/node/patchy-api). It also updates the Item ids for the chest ui made by https://github.com/Herobrine643928 
