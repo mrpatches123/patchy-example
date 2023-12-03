@@ -4,7 +4,7 @@
 
 apon cloning this repo you might need to manually run the games type definitions for listed in the package.json for server and server-ui for errors to disappear.
 
-### Main Repo
+### API/Wrapper Repo
 
 https://github.com/mrpatches123/patchy-api/tree/main
 
