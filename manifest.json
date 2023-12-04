@@ -1,13 +1,13 @@
 {
 	"format_version": 2,
 	"header": {
-		"description": "By: BootheBoys#0057 - 1.0.68",
-		"name": "SBBP",
-		"uuid": "586b4086-2d0d-402b-8a10-5c575ad23146",
+		"description": "1.0.0",
+		"name": "patchy-example",
+		"uuid": "5d6bfc93-627d-4197-96fd-f4947360fe89",
 		"version": [
 			1,
 			0,
-			68
+			1
 		],
 		"min_engine_version": [
 			1,
@@ -19,7 +19,7 @@
 		{
 			"description": "By: BootheBoys#0057",
 			"type": "data",
-			"uuid": "d92b67fe-3ab1-42f1-85d8-55834658fbe4",
+			"uuid": "a5cb5367-8cb1-43e2-97c6-b6aec43a84c5",
 			"version": [
 				0,
 				1,
@@ -29,7 +29,7 @@
 		{
 			"type": "script",
 			"language": "javascript",
-			"uuid": "32395c59-c04e-4e2e-800d-4c9d3037b292",
+			"uuid": "b3fc0087-f8df-42d5-94b9-599d0f6429c1",
 			"entry": "scripts/package_import.js",
 			"version": "1.0.0-beta"
 		}
@@ -46,12 +46,5 @@
 	],
 	"capabilities": [
 		"script_eval"
-	],
-	"metadata": {
-		"generated_with": {
-			"bridge": [
-				"1.8.4"
-			]
-		}
-	}
+	]
 }

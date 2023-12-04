@@ -1,9 +1,8 @@
 import { BlockAreaSize } from "@minecraft/server";
-import { PlotsVector3, plotBuilder } from "patchy_api/modules";
-
+import plotBuilder, { PlotsVector3 } from "../../patchy_api/libraries/classes/plot.js";
 plotBuilder.create('rlzrxsd', {
 	size: new BlockAreaSize(10, 10, 10),
-	start: { x: 0, y: 0, z: 0 },
+	start: { x: 10, y: 113, z: 53 },
 	loop: true,
 	property: false,
 	plotNumberIdentifier: 'rlzrxsd',
@@ -18,7 +17,7 @@ plotBuilder.create('rlzrxsd', {
 			count: 5,
 			direction: 'x',
 			offset: { x: 10, y: 0, z: 0 },
-			start: new PlotsVector3(0, 0, 11),
+			start: new PlotsVector3(0, 0, 10),
 		}
 	]
 });
