@@ -1,11 +1,20 @@
 import { commandBuilder, formBuilder, isVector3, players, propertyManager } from '../modules.js';
 import config from '../config.js';
+import { Vector } from '@minecraft/server';
 const { commandPrefix: prefix } = config;
 function parsePropertyValue(string) {
     const number = Number(string);
     if (!Number.isNaN(number))
         return number;
     const booleanString = string?.toLowerCase?.()?.trim?.();
+    if (booleanString === 'Number')
+        return Number;
+    if (booleanString === 'String')
+        return String;
+    if (booleanString === 'Boolean')
+        return Boolean;
+    if (booleanString === 'Vector')
+        return Vector;
     if (booleanString === 'true')
         return true;
     if (booleanString === 'false')

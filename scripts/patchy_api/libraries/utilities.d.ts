@@ -9,8 +9,9 @@ export declare const content: {
     chatFormat(...messages: any[]): void;
 };
 export declare function vector3Equals(vector1: Vector3, vector2: Vector3): boolean;
-export declare function isVector3(target: any): boolean;
-export declare function isVector2(target: any): boolean;
+export declare function isVector3(target: any): target is Vector3;
+export declare function isVector2(target: any): target is Vector2;
+export declare function isVector2Or3(target: any): target is Vector2 | Vector3;
 export declare function getBlockAsync(dimension: Dimension, blockLocation: Vector3): Promise<Block>;
 export declare function rotationToDirection(rotation: Vector2): "Down" | "East" | "North" | "South" | "Up" | "West" | undefined;
 export declare const reverseDirection: {

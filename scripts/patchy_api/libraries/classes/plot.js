@@ -50,59 +50,6 @@ export class BlockVector3 {
         this.z = z;
     }
 }
-const string = `467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..`;
-const finding = 0;
-const lines = string.split('\n');
-const regex = /\d+/g;
-function checkIfNotDigitAround(length, l, i, lines) {
-    if (l !== 0) {
-        for (let x = i - (i === 0) ? 0 : 1; x < lines[l + 1].length && x <= x + length + 1; x++) {
-            const charCode = lines[l + 1].charCodeAt(x);
-            if (charCode >= 48 && charCode <= 57) continue;
-            if (charCode === 46) continue;
-            return true;
-        }
-    }
-    if (i !== 0) {
-        const charCode = lines[l].charCodeAt(i - 1);
-        if (!(charCode >= 48 && charCode <= 57) && charCode === 46) return true;
-    }
-    if (i !== lines[l].length - 1) {
-        const charCode = lines[l].charCodeAt(i + 1);
-        if (!(charCode >= 48 && charCode <= 57) && charCode === 46) return true;
-    }
-    if (l !== lines.length - 1) {
-        for (let x = i - (i === 0) ? 0 : 1; x < lines[l + 1].length && x <= x + length + 1; x++) {
-            const charCode = lines[l + 1].charCodeAt(x);
-            if (charCode >= 48 && charCode <= 57) continue;
-            if (charCode === 46) continue;
-            return true;
-        }
-    }
-}
-const numbers = lines.map((line) => {
-    const matches = [];
-    let match;
-    while (true) {
-        match = regex.exec(line);
-        console.log(match?.index);
-        if (!match) break;
-        matches.push([match.index, match.toString()]);
-    }
-    return (matches.length) ? matches : false;
-}).reduce((sum, matches, l) => checkIfNotDigitAround() ? sum + matches.reduce((sum2, [, num]) => sum + Number(num), 0) : sum, 0);
-console.log(numbers);
-
-
 scoreboardBuilder.add('blockPlaceMarginOverideX');
 scoreboardBuilder.add('blockPlaceMarginOverideY');
 scoreboardBuilder.add('blockPlaceMarginOverideZ');
@@ -138,14 +85,12 @@ export class PlotBuilder {
             throw new Error(`size, in rules at params[1] is not of type: BlockAreaSize!`);
         if (!size && !ruleSets)
             throw new Error(`size and ruleSets, in rules at params[1] are not defined therefore size in either is not defined!`);
-        const indexsSize = ruleSets.reduce((sumation, current, i) => {
-            if (!isVector3(current)) {
-                sumation.push(i);
-                return sumation;
-            }
-            else
-                return [];
-        }, []);
+        const indexsSize = ruleSets.reduce((sumation, current, i) => { if (!isVector3(current)) {
+            sumation.push(i);
+            return sumation;
+        }
+        else
+            return []; }, []);
         if (!size && ruleSets && indexsSize.length)
             throw new Error(`ruleSets, at indexs: ${andArray(indexsSize)} in rules at params[1]!`);
         if (!start)
@@ -220,10 +165,12 @@ export class PlotBuilder {
         ruleSets.forEach(({ count, start, direction, offset, blockPlaceMargin }, i) => {
             if (!(start instanceof PlotsVector3) && !(start instanceof BlockVector3))
                 throw new Error(`start at ruleSets[${i}] in rules at params[1] is not of type: BlockVector3 or PlotVector3  `);
-            if (count && typeof count !== 'number')
-                throw new Error(`count at ruleSets[${i}] in rules at params[1] is not of type: number`);
-            if (!directions.includes(direction))
-                throw new Error(`direction, ${direction} at ruleSets[${i}] in rules at params[1] is not one of the following: ${orArray(directions)}`);
+            if (count && typeof count !== 'number' && !isVector3(count))
+                throw new Error(`count at ruleSets[${i}] in rules at params[1] is not of type: number or Vector3`);
+            if (!isVector3(direction) && !directions.includes(direction))
+                throw new Error(`direction, ${direction} at ruleSets[${i}] in rules at params[1] is not one of the following: Vector3, ${orArray(directions)}`);
+            if (isVector3(direction) && !isVector3(count) || !isVector3(direction) && isVector3(count))
+                throw new Error(`direction and count, ${direction} at ruleSets[${i}] in rules at params[1] must be of type: Vector3, if one of them is!`);
             if (offset && !isVector3(offset))
                 throw new Error(`offset, at ruleSets[${i}] in rules at params[1] is not of type: {x: number, y: number, z: number})}`);
             if (blockPlaceMargin && !isVector3(blockPlaceMargin))
@@ -238,6 +185,37 @@ export class PlotBuilder {
         rules?.ruleSets?.forEach((ruleSet, i) => {
             const { count, start: startRuleSet, direction, offset, blockPlaceMargin, size: sizeRuleSet } = ruleSet;
             let offsetVectorForDirection;
+            if (isVector3(direction) && isVector3(count)) {
+                const newCount = { x: (count.x <= 0) ? 1 : count.x, y: (count.z <= 0) ? 1 : count.z, z: (count.z <= 0) ? 1 : count.z };
+                for (let z = 0; z < newCount.z; z++) {
+                    for (let y = 0; y < count.y; y++) {
+                        for (let x = 0; x < count.x; x++) {
+                            const clone = { ...ruleSet };
+                            const plotRelitive = { x, y, z };
+                            if (startRuleSet instanceof PlotsVector3)
+                                clone.start = Vector.add(startRuleSet, start);
+                            clone.start = vectorToVector3(Vector.add(Vector.multiply(Vector.add(offset ?? Vector.zero, direction), plotRelitive), clone.start));
+                            if (clone.start.x < absoluteStart.x)
+                                absoluteStart.x = clone.start.x;
+                            if (clone.start.y < absoluteStart.y)
+                                absoluteStart.y = clone.start.y;
+                            if (clone.start.z < absoluteStart.z)
+                                absoluteStart.z = clone.start.z;
+                            const end = Vector.add(clone.start, sizeRuleSet ?? size);
+                            if (end.x > absoluteEnd.x)
+                                absoluteEnd.x = end.x;
+                            if (end.y > absoluteEnd.y)
+                                absoluteEnd.y = end.y;
+                            if (end.z > absoluteEnd.z)
+                                absoluteEnd.z = end.z;
+                            newRuleSets?.push?.(clone);
+                        }
+                    }
+                }
+                return;
+            }
+            else if (isVector3(direction) || isVector3(count))
+                return;
             switch (direction) {
                 case 'x': {
                     offsetVectorForDirection = { x: 1, y: 0, z: 0 };
@@ -398,6 +376,8 @@ export class PlotBuilder {
                     // content.warn({ ingorePlotSystem, currentPlot });
                     if (!currentPlot)
                         return;
+                    if (!(currentPlot in this.plots))
+                        return;
                     if (ingorePlotSystem)
                         return;
                     const { plotNumberIdentifier, property, teleport, defaultGamemode, exclusive, size: sizePlot, start: startPlot } = this.plots[currentPlot].rules ?? {};
@@ -461,6 +441,8 @@ export class PlotBuilder {
                 const { currentPlot } = properties.strings;
                 if (!currentPlot || ingorePlotSystem)
                     return;
+                if (!(currentPlot in this.plots))
+                    return;
                 const { plotNumberIdentifier, property, ruleSets, defaultPermision, exclusive, size: defaultSize, start: defaultStart } = this.plots[currentPlot].rules ?? {};
                 const { plotNumberOveride, permisionOveride: permision = defaultPermision } = properties.numbers;
                 let plotNumber;
@@ -502,6 +484,8 @@ export class PlotBuilder {
                 const { ingorePlotSystem } = scores;
                 const { currentPlot } = properties.strings;
                 if (!currentPlot || ingorePlotSystem)
+                    return;
+                if (!(currentPlot in this.plots))
                     return;
                 const { plotNumberIdentifier, property, ruleSets, defaultPermision, defaultGamemode, exclusive, size: defaultSize, start: defaultStart } = this.plots[currentPlot].rules ?? {};
                 const { plotNumberOveride } = properties.numbers;

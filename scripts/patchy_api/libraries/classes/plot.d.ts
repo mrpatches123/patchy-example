@@ -14,7 +14,7 @@ export declare class BlockVector3 {
     constructor(x: number, y: number, z: number);
 }
 interface PlotRuleSet {
-    count?: number;
+    count?: number | Vector3;
     size?: BlockAreaSize;
     start: {
         x: number;
@@ -26,7 +26,7 @@ interface PlotRuleSet {
         y: number;
         z: number;
     };
-    direction: 'x' | '-x' | 'z' | '-z' | 'y' | '-y';
+    direction: 'x' | '-x' | 'z' | '-z' | 'y' | '-y' | Vector3;
     blockPlaceMargin?: {
         x: number;
         y: number;

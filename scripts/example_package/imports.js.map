@@ -1,1 +1,1 @@
-{"version":3,"file":"imports.js","sourceRoot":"","sources":["../../src/example_package/imports.ts"],"names":[],"mappings":"AAAA,QAAQ;AACR,OAAO,mCAAmC,CAAC;AAC3C,SAAS;AACT,OAAO,yBAAyB,CAAC;AACjC,OAAO,4BAA4B,CAAC"}
+{"version":3,"file":"imports.js","sourceRoot":"","sources":["../../src/example_package/imports.ts"],"names":[],"mappings":"AAAA,QAAQ;AACR,OAAO,mCAAmC,CAAC;AAC3C,OAAO,iCAAiC,CAAC;AACzC,SAAS;AACT,OAAO,yBAAyB,CAAC;AACjC,OAAO,4BAA4B,CAAC"}
