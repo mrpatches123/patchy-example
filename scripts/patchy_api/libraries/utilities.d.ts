@@ -23,7 +23,7 @@ export declare const reverseDirection: {
     West: string;
 };
 export declare function rotationToHorizontalDirection(rotation: Vector2): "East" | "North" | "South" | "West" | undefined;
-export declare function isDefined(input: any): boolean;
+export declare function isDefined<T>(input: T | undefined | null): input is T;
 export declare function permutationClone(permutation: BlockPermutation): any;
 export declare function weightsRandom(...weights: number[]): number;
 export declare class RemovableTree {

@@ -75,7 +75,7 @@ export class PlotBuilder {
             throw new Error(`key: ${key}, at params[0] is not of type: String!`);
         if (!(rules instanceof Object))
             throw new Error(`rules in rules at params[1] is not of type: Object!`);
-        let { size, exclusive, start, ruleSets = [], property, plotNumberIdentifier, structure, teleport, loop = false, loopDirection, defaultPermision, defaultGamemode } = rules;
+        let { size, exclusive, start, ruleSets = [], property, plotNumberIdentifier, structure, teleport, allowMultiplePlayers, loop = false, loopDirection, defaultPermision, defaultGamemode } = rules;
         // content.warn({ plotNumberIdentifier });
         if (!exclusive && typeof plotNumberIdentifier !== 'string')
             throw new Error('plotNumberIdentifier in rules at params[1] is not of type: String!');
@@ -107,6 +107,8 @@ export class PlotBuilder {
             throw new Error(`defaultPermision, in rules at params[1] is defined and is not one of the following: ${orArray(permisions)}!`);
         if (defaultGamemode && !gamemodes.includes(defaultGamemode))
             throw new Error(`defaultGamemode, in rules at params[1] is defined and is not one of the following: ${orArray(gamemodes)}!`);
+        if (isDefined(allowMultiplePlayers) && typeof allowMultiplePlayers !== 'boolean')
+            throw new Error(`allowMultiplePlayers, in rules at params[1] is defined and not of type: Boolean!`);
         if (structure) {
             if (!(structure instanceof Object))
                 throw new Error(`structure, in rules at params[1] is defined and not of type: Object!`);
@@ -184,8 +186,8 @@ export class PlotBuilder {
         const absoluteEnd = { x: 0, y: 0, z: 0 };
         rules?.ruleSets?.forEach((ruleSet, i) => {
             const { count, start: startRuleSet, direction, offset, blockPlaceMargin, size: sizeRuleSet } = ruleSet;
-            let offsetVectorForDirection;
             if (isVector3(direction) && isVector3(count)) {
+                const offsetVectorForDirection = Vector.multiply(direction, sizeRuleSet ?? size);
                 const newCount = { x: (count.x <= 0) ? 1 : count.x, y: (count.z <= 0) ? 1 : count.z, z: (count.z <= 0) ? 1 : count.z };
                 for (let z = 0; z < newCount.z; z++) {
                     for (let y = 0; y < count.y; y++) {
@@ -194,7 +196,7 @@ export class PlotBuilder {
                             const plotRelitive = { x, y, z };
                             if (startRuleSet instanceof PlotsVector3)
                                 clone.start = Vector.add(startRuleSet, start);
-                            clone.start = vectorToVector3(Vector.add(Vector.multiply(Vector.add(offset ?? Vector.zero, direction), plotRelitive), clone.start));
+                            clone.start = vectorToVector3(Vector.add(Vector.multiply(Vector.add(offset ?? Vector.zero, offsetVectorForDirection), plotRelitive), clone.start));
                             if (clone.start.x < absoluteStart.x)
                                 absoluteStart.x = clone.start.x;
                             if (clone.start.y < absoluteStart.y)
@@ -216,6 +218,7 @@ export class PlotBuilder {
             }
             else if (isVector3(direction) || isVector3(count))
                 return;
+            let offsetVectorForDirection;
             switch (direction) {
                 case 'x': {
                     offsetVectorForDirection = { x: 1, y: 0, z: 0 };
@@ -273,6 +276,14 @@ export class PlotBuilder {
             this.subscribed = true;
             this.subscribe();
         }
+        if (!exclusive && !allowMultiplePlayers) {
+            let plots = databases.get('plots*API') ?? databases.add('plots*API');
+            ;
+            if (!plots.has(key)) {
+                plots.set(key, { availablePlots: [0], currentIndex: 0 });
+                databases.queueSave('plots*API');
+            }
+        }
         if (!exclusive && property) {
             server.objectiveAdd(plotNumberIdentifier);
         }
@@ -307,12 +318,25 @@ export class PlotBuilder {
         player.memory.lastLocation = undefined;
         if (!key)
             return;
-        const { exclusive, teleport: { key: teleportKey } = {} } = this.plots[key].rules;
-        if (!exclusive)
-            return;
-        if (!teleportKey)
-            return;
-        teleportBuilder.teleport(player, teleportKey);
+        const ruleSet = this.plots[key].rules;
+        let { exclusive, teleport = {}, start, size } = ruleSet;
+        if (teleport) {
+            let { location: teleportLocation, face, key: teleportKey } = teleport;
+            if (teleportKey)
+                teleportBuilder.teleport(player, teleportKey);
+            else {
+                teleportLocation = { location: start, offset: teleportLocation };
+                if (!isVector2(face))
+                    face = { location: start, offset: face };
+                const object = { location: teleportLocation, face, dimension: overworld };
+                // content.warn({ teleportLocation: objectVector3(teleportLocation), start: objectVector3(start) });
+                teleportBuilder.teleportOnce(player, object);
+            }
+        }
+        else {
+            const { x: rx, y: ry } = player.rotation;
+            player.teleport({ x: (size.x) / 2 + start.x, y: start.y + 1, z: (size.z) / 2 + start.z }, { dimension: overworld, rotation: { x: rx, y: ry } });
+        }
     }
     setOveride(player, type, value) {
         content.warn({ player: player.name, type, value });
@@ -429,7 +453,7 @@ export class PlotBuilder {
                         }
                         else {
                             const { x: rx, y: ry } = rotation;
-                            player.teleport({ x: (size.x) / 2 + start.x, y: start.y, z: (size.z) / 2 + start.z }, { dimension: overworld, rotation: { x: rx, y: ry } });
+                            player.teleport({ x: (size.x) / 2 + start.x, y: start.y + 1, z: (size.z) / 2 + start.z }, { dimension: overworld, rotation: { x: rx, y: ry } });
                         }
                     }
                 });
@@ -578,7 +602,7 @@ export class PlotBuilder {
         // content.warn({ bool: !isDefined(plotNumber), plotNumber: plotNumber ?? 'undefined' });
         const { scores, properties } = player;
         const { subscribed } = this;
-        const { plotNumberIdentifier, property, loop, teleport, structure, ruleSets = [] } = this.plots[key].rules ?? {};
+        const { plotNumberIdentifier, property, loop, teleport, structure, ruleSets = [], allowMultiplePlayers } = this.plots[key].rules ?? {};
         const queryNumber = this.query(player, key);
         if (isDefined(queryNumber))
             return { wasAdded: false, plotNumber: queryNumber, full: false };
@@ -586,12 +610,14 @@ export class PlotBuilder {
         if (!plots)
             throw new Error('why does the plots*API db not exist');
         const plot = plots.get(key);
-        if (!plot)
-            throw new Error(`plot: ${key}, does not exist`);
-        let { availablePlots, currentIndex, hasBeenSubscribed } = plot;
+        let { availablePlots, currentIndex, hasBeenSubscribed } = plot ?? {};
         if (!loop && ruleSets.length === currentIndex && !availablePlots.length)
             return { wasAdded: false, full: true };
-        if (!isDefined(plotNumber)) {
+        if (allowMultiplePlayers) {
+            if (!isDefined(plotNumber))
+                throw new Error(`plotNumber at params[2] is not defined while allowMultiplePlayers for key: ${key}, is true`);
+        }
+        else if (!isDefined(plotNumber)) {
             plotNumber = availablePlots.shift();
             if (availablePlots.length === 0)
                 availablePlots.push(++currentIndex);
@@ -622,31 +648,17 @@ export class PlotBuilder {
             content.warn({ t: 'structure', sx, sy, sz, x: sx + x, y: sy + y, z: sz + z });
             loadId = structureBuilder.load({ ...structure, ...{ location: { x: sx + x, y: sy + y, z: sz + z } } });
         }
-        if (teleport) {
-            // content.warn('9090909090909090909');
-            wait.add(`${player}*plot*structure`, () => {
-                const test = (!loadId) ? true : structureBuilder.getLoadStatus(loadId).done;
-                // content.warn({ test, loadId, done: structureBuilder.getLoadStatus(loadId)?.done });
-                return test;
-            }, () => {
-                let { location: teleportLocation, face, key } = teleport;
-                if (key) {
-                    teleportBuilder.teleport(player, key);
-                    return true;
-                }
-                else {
-                    const { start: { x, y, z } } = ruleSet;
-                    const startLocation = { x, y, z };
-                    teleportLocation = { location: startLocation, offset: teleportLocation };
-                    // content.warn(native.stringify(face));
-                    if (isVector3(face))
-                        face = { location: startLocation, offset: face };
-                    // content.warn(native.stringify(face));
-                    teleportBuilder.teleportOnce(player, { location: teleportLocation, face: face, dimension: overworld });
-                    return true;
-                }
-            }, { once: true, start: true, remove: true, afterLoad: true });
-        }
+        // if (teleport) {
+        // content.warn('9090909090909090909');
+        wait.add(`${player}*plot*structure`, () => {
+            const test = (!isDefined(loadId)) ? true : structureBuilder.getLoadStatus(loadId).done;
+            content.warn({ test, loadId, done: structureBuilder.getLoadStatus(loadId)?.done });
+            return test;
+        }, () => {
+            this.setCurrent(player, key);
+            return true;
+        }, { once: true, start: true, remove: true, afterLoad: true });
+        // }
         plots.set(key, { availablePlots, currentIndex, hasBeenSubscribed });
         // content.chatFormat({ databases });
         databases.queueSave('plots*API');
@@ -654,7 +666,7 @@ export class PlotBuilder {
     }
     reset(key) {
         const plots = databases.get('plots*API') ?? databases.add('plots*API');
-        plots.set(key, { availablePlots: [0], currentIndex: 0, hasBeenSubscribed: false });
+        plots.set(key, { availablePlots: [0], currentIndex: 0 });
         databases.queueSave('plots*API');
     }
     remove(player, key) {

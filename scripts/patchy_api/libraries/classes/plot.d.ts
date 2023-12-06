@@ -57,6 +57,7 @@ interface PlotRules {
     plotNumberIdentifier?: string;
     defaultPermision?: 'read' | 'write' | 'break' | 'place' | 'open' | 'open-break' | 'press';
     defaultGamemode?: 0 | 1 | 2;
+    allowMultiplePlayers?: boolean;
     /**
      * default?= false
      */

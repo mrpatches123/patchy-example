@@ -3,7 +3,7 @@ import plotBuilder, { PlotsVector3 } from "../../patchy_api/libraries/classes/pl
 import { overworld } from "patchy_api/modules.js";
 plotBuilder.create('rlzrxysdst', {
     size: new BlockAreaSize(10, 10, 10),
-    start: { x: 10, y: 113, z: 53 },
+    start: { x: 10, y: 143, z: 53 },
     loop: true,
     property: false,
     plotNumberIdentifier: 'rlzrxysdst',
@@ -18,6 +18,8 @@ plotBuilder.create('rlzrxysdst', {
             count: { x: 10, y: 10, z: 0 },
             direction: { x: 1, y: 1, z: 0 },
             start: new PlotsVector3(0, 0, 0),
+            offset: { x: 5, y: 5, z: 5 },
+            blockPlaceMargin: { x: 1, y: 1, z: 1 },
         }
     ]
 });

@@ -1,5 +1,249 @@
 export const typeIdToID = new Map([
     [
+        "minecraft:waxed_oxidized_copper_trapdoor",
+        -799
+    ],
+    [
+        "minecraft:waxed_weathered_copper_trapdoor",
+        -798
+    ],
+    [
+        "minecraft:waxed_exposed_copper_trapdoor",
+        -797
+    ],
+    [
+        "minecraft:waxed_copper_trapdoor",
+        -796
+    ],
+    [
+        "minecraft:oxidized_copper_trapdoor",
+        -795
+    ],
+    [
+        "minecraft:weathered_copper_trapdoor",
+        -794
+    ],
+    [
+        "minecraft:exposed_copper_trapdoor",
+        -793
+    ],
+    [
+        "minecraft:copper_trapdoor",
+        -792
+    ],
+    [
+        "minecraft:waxed_oxidized_copper_door",
+        -791
+    ],
+    [
+        "minecraft:waxed_weathered_copper_door",
+        -790
+    ],
+    [
+        "minecraft:waxed_exposed_copper_door",
+        -789
+    ],
+    [
+        "minecraft:waxed_copper_door",
+        -788
+    ],
+    [
+        "minecraft:oxidized_copper_door",
+        -787
+    ],
+    [
+        "minecraft:weathered_copper_door",
+        -786
+    ],
+    [
+        "minecraft:exposed_copper_door",
+        -785
+    ],
+    [
+        "minecraft:copper_door",
+        -784
+    ],
+    [
+        "minecraft:waxed_oxidized_copper_bulb",
+        -783
+    ],
+    [
+        "minecraft:waxed_weathered_copper_bulb",
+        -782
+    ],
+    [
+        "minecraft:waxed_exposed_copper_bulb",
+        -781
+    ],
+    [
+        "minecraft:waxed_copper_bulb",
+        -780
+    ],
+    [
+        "minecraft:oxidized_copper_bulb",
+        -779
+    ],
+    [
+        "minecraft:weathered_copper_bulb",
+        -778
+    ],
+    [
+        "minecraft:exposed_copper_bulb",
+        -777
+    ],
+    [
+        "minecraft:copper_bulb",
+        -776
+    ],
+    [
+        "minecraft:waxed_oxidized_copper_grate",
+        -775
+    ],
+    [
+        "minecraft:waxed_weathered_copper_grate",
+        -774
+    ],
+    [
+        "minecraft:waxed_exposed_copper_grate",
+        -773
+    ],
+    [
+        "minecraft:waxed_copper_grate",
+        -772
+    ],
+    [
+        "minecraft:oxidized_copper_grate",
+        -771
+    ],
+    [
+        "minecraft:weathered_copper_grate",
+        -770
+    ],
+    [
+        "minecraft:exposed_copper_grate",
+        -769
+    ],
+    [
+        "minecraft:copper_grate",
+        -768
+    ],
+    [
+        "minecraft:waxed_weathered_chiseled_copper",
+        -767
+    ],
+    [
+        "minecraft:waxed_oxidized_chiseled_copper",
+        -766
+    ],
+    [
+        "minecraft:waxed_exposed_chiseled_copper",
+        -765
+    ],
+    [
+        "minecraft:waxed_chiseled_copper",
+        -764
+    ],
+    [
+        "minecraft:oxidized_chiseled_copper",
+        -763
+    ],
+    [
+        "minecraft:weathered_chiseled_copper",
+        -762
+    ],
+    [
+        "minecraft:exposed_chiseled_copper",
+        -761
+    ],
+    [
+        "minecraft:chiseled_copper",
+        -760
+    ],
+    [
+        "minecraft:chiseled_tuff_bricks",
+        -759
+    ],
+    [
+        "minecraft:tuff_brick_wall",
+        -758
+    ],
+    [
+        "minecraft:tuff_brick_stairs",
+        -757
+    ],
+    [
+        "minecraft:tuff_brick_double_slab",
+        -756
+    ],
+    [
+        "minecraft:tuff_brick_slab",
+        -755
+    ],
+    [
+        "minecraft:tuff_bricks",
+        -754
+    ],
+    [
+        "minecraft:chiseled_tuff",
+        -753
+    ],
+    [
+        "minecraft:polished_tuff_wall",
+        -752
+    ],
+    [
+        "minecraft:polished_tuff_stairs",
+        -751
+    ],
+    [
+        "minecraft:polished_tuff_double_slab",
+        -750
+    ],
+    [
+        "minecraft:polished_tuff_slab",
+        -749
+    ],
+    [
+        "minecraft:polished_tuff",
+        -748
+    ],
+    [
+        "minecraft:tuff_wall",
+        -747
+    ],
+    [
+        "minecraft:tuff_stairs",
+        -746
+    ],
+    [
+        "minecraft:tuff_double_slab",
+        -745
+    ],
+    [
+        "minecraft:tuff_slab",
+        -744
+    ],
+    [
+        "minecraft:dark_oak_planks",
+        -743
+    ],
+    [
+        "minecraft:acacia_planks",
+        -742
+    ],
+    [
+        "minecraft:jungle_planks",
+        -741
+    ],
+    [
+        "minecraft:birch_planks",
+        -740
+    ],
+    [
+        "minecraft:spruce_planks",
+        -739
+    ],
+    [
         "minecraft:black_terracotta",
         -738
     ],
@@ -426,6 +670,30 @@ export const typeIdToID = new Map([
     [
         "minecraft:sniffer_egg",
         -596
+    ],
+    [
+        "minecraft:polished_andesite",
+        -595
+    ],
+    [
+        "minecraft:andesite",
+        -594
+    ],
+    [
+        "minecraft:polished_diorite",
+        -593
+    ],
+    [
+        "minecraft:diorite",
+        -592
+    ],
+    [
+        "minecraft:polished_granite",
+        -591
+    ],
+    [
+        "minecraft:granite",
+        -590
     ],
     [
         "minecraft:dead_horn_coral",
@@ -1482,6 +1750,10 @@ export const typeIdToID = new Map([
     [
         "minecraft:dripstone_block",
         -317
+    ],
+    [
+        "minecraft:crafter",
+        -313
     ],
     [
         "minecraft:lightning_rod",
@@ -2720,7 +2992,7 @@ export const typeIdToID = new Map([
         4
     ],
     [
-        "minecraft:planks",
+        "minecraft:oak_planks",
         5
     ],
     [
@@ -5520,52 +5792,56 @@ export const typeIdToID = new Map([
         707
     ],
     [
-        "minecraft:coral",
+        "minecraft:planks",
         708
     ],
     [
-        "minecraft:log2",
+        "minecraft:coral",
         709
     ],
     [
-        "minecraft:concrete",
+        "minecraft:log2",
         710
     ],
     [
-        "minecraft:concrete_powder",
+        "minecraft:concrete",
         711
     ],
     [
-        "minecraft:stained_glass",
+        "minecraft:concrete_powder",
         712
     ],
     [
-        "minecraft:stained_glass_pane",
+        "minecraft:stained_glass",
         713
     ],
     [
-        "minecraft:shulker_box",
+        "minecraft:stained_glass_pane",
         714
     ],
     [
-        "minecraft:boat",
+        "minecraft:shulker_box",
         715
     ],
     [
-        "minecraft:dye",
+        "minecraft:boat",
         716
     ],
     [
-        "minecraft:banner_pattern",
+        "minecraft:dye",
         717
     ],
     [
-        "minecraft:spawn_egg",
+        "minecraft:banner_pattern",
         718
     ],
     [
-        "minecraft:end_crystal",
+        "minecraft:spawn_egg",
         719
+    ],
+    [
+        "minecraft:end_crystal",
+        720
     ]
 ]);
 //# sourceMappingURL=type_ids.js.map
